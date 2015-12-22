@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Tests</title>
+<head>
+<link href="cardstyle.css" rel="stylesheet" />
+<style>
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin: auto;
+    position: relative;
+    width: 960px;
+}
+</style>
+<script src="d3.min.js"></script>
+<script>
+
+var suiteConversion = {
+    'anonymity': '♠',
+    'hacking': '♥',
+    'outreach': '♣',
+    'opsec': '♦'
+};
+
+var drawSkillCard = function(skillObj) {
+
+    var cardBackground = document.createElement('div');
+    cardBackground.setAttribute('class', skillObj.suite);
+
+    var cardSuite = document.createElement('div');
+    cardSuite.setAttribute('class', "suite");
+    cardSuite.innerHTML = suiteConversion[skillObj.suite];
+
+    var cardTitle = document.createElement('div');
+    cardTitle.setAttribute('class', "title");
+    cardTitle.innerHTML = skillObj.title;
+
+    var cardPower = document.createElement('div');
+    cardPower.setAttribute('class', "power");
+    cardPower.innerHTML = skillObj.value;
+
+    var cardKind = document.createElement('div');
+    cardKind.setAttribute('class', "kind");
+    cardKind.innerHTML = skillObj.suite;
+
+    cardBackground.appendChild(cardSuite);
+    cardBackground.appendChild(cardTitle);
+    cardBackground.appendChild(cardPower);
+    cardBackground.appendChild(cardKind);
+
+    return cardBackground.outerHTML;
+};
+
+var drawEventCard = function(eventObj) {
+
+    var cardBackground = document.createElement('div');
+    cardBackground.setAttribute('class', "exception");
+
+    var cardTitle = document.createElement('div');
+    cardTitle.setAttribute('class', "effectName");
+    cardTitle.innerHTML = eventObj.title;
+
+    var emptySpace = document.createElement('div');
+    emptySpace.setAttribute('class', "suite");
+
+    var cardEffect = document.createElement('div');
+    cardEffect.setAttribute('class', "effect");
+    cardEffect.innerHTML = eventObj.effects;
+
+    cardBackground.appendChild(emptySpace);
+    cardBackground.appendChild(cardTitle);
+    cardBackground.appendChild(cardEffect);
+
+    return cardBackground.outerHTML;
+};
+
+var drawCard = function(cardObj) {
+
+    /* .top is always a skill at the moment */
+    var topCard = document.createElement('div');
+    topCard.setAttribute('class', "top " + cardObj.top.seed);
+    topCard.innerHTML = drawSkillCard(cardObj.top);
+
+    var downCard = document.createElement('div');
+
+    if (cardObj.down.kind == "exception") {
+        downCard.setAttribute('class', "down exception");
+        downCard.innerHTML = drawEventCard(cardObj.down);
+    } else {
+        downCard.setAttribute('class', "down " + cardObj.down.seed);
+        downCard.innerHTML = drawSkillCard(cardObj.down);
+    }
+
+    var newCard = document.createElement('div');
+    newCard.setAttribute('class', "card");
+    newCard.appendChild(topCard);
+    newCard.appendChild(downCard);
+
+    return newCard.outerHTML;
+};
+
+var drawAttack = function(attackObj) {
+    console.log(attackObj);
+
+    var newAttack = document.createElement('div');
+    newAttack.setAttribute('class', "attackCard");
+
+    var newHead = document.createElement('div');
+    newHead.setAttribute('class', "attackHead");
+
+    var topSuite = document.createElement('div');
+    topSuite.setAttribute('class', "attackSuite");
+    topSuite.innerHTML = suiteConversion[attackObj.Targeting];
+
+    var newName = document.createElement('div');
+    newName.setAttribute('class', "attackName");
+    newName.innerHTML = attackObj.Attack;
+
+    var newPoints = document.createElement('div');
+    newPoints.setAttribute('class', "attackPoints");
+    newPoints.innerHTML = "ℙ " + attackObj.power + " ⧟ ⅅ " + attackObj.damage;
+
+    var attackKind = document.createElement('div');
+    attackKind.setAttribute('class', "kind");
+    attackKind.innerHTML = attackObj.Targeting;
+
+    var newLegacy = document.createElement('div');
+    newLegacy.setAttribute('class', "attackLegacy");
+
+    var legacyName = document.createElement('div');
+    legacyName.setAttribute('class', "legacyName");
+    legacyName.innerHTML = attackObj['legacy name'];
+
+    var legacyDesc = document.createElement('div');
+    legacyDesc.setAttribute('class', "legacyDesc");
+    legacyDesc.innerHTML = attackObj.legacy;
+
+    var newReuse = document.createElement('div');
+    newReuse.setAttribute('class', "attackReuse");
+
+    var reuseSuite = document.createElement('div');
+    reuseSuite.setAttribute('class', "attackSuite");
+    reuseSuite.innerHTML = suiteConversion[attackObj.Targeting];
+
+    var reuseWeigth = document.createElement('div');
+    reuseWeigth.setAttribute('class', "reuseWeigth");
+    reuseWeigth.innerHTML = "1";
+
+    newHead.appendChild(topSuite);
+    newHead.appendChild(newName);
+    newHead.appendChild(attackKind);
+
+    newLegacy.appendChild(legacyName);
+    newLegacy.appendChild(legacyDesc);
+
+    newReuse.appendChild(reuseSuite);
+    newReuse.appendChild(reuseWeigth);
+
+    newAttack.appendChild(newHead);
+    newAttack.appendChild(newPoints);
+    newAttack.appendChild(newLegacy);
+    newAttack.appendChild(newReuse);
+
+    return newAttack.outerHTML;
+};
+
+var loadCards = function() {
+
+    d3.json("GENERATED_ATTACK.json", function(error, elements) {
+
+        d3.select("#attacks")
+                .selectAll("p")
+                .data(elements)
+                .enter()
+                .append("div")
+                .html(function(d) {
+                    return drawAttack(d);
+                })
+    });
+
+    d3.json("GENERATED_DECK.json", function(error, elements) {
+
+        d3.select("#deck")
+                .selectAll("p")
+                .data(elements)
+                .enter()
+                .append("div")
+                .html(function(d) {
+                    return drawCard(d);
+                })
+    });
+}
+
+</script>
+
+</head>
+<body onload="loadCards();">
+
+<div id="attacks">
+</div>
+
+<div id="deck">
+</div>
+
+</body>
+</html>

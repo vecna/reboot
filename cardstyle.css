@@ -1,0 +1,161 @@
+.card {
+    width: 240px;
+    border: 2px solid #290d53;
+    height: 330px;
+    margin: 5px;
+    float: left;
+}
+
+/* Deck (skill + event) */
+
+.top {
+    height: 160px;
+    border: 3px solid #1622be;
+}
+.down {
+    height: 160px;
+    border: 3px solid #138806;
+    -moz-transform: rotate(180deg);
+}
+
+.exception { background-color: #d9ffee; }
+.anonymity { background-color: #cefab9; }
+.outreach { background-color: #effcff; }
+.hacking { background-color: #d0f6f0; }
+.opsec { background-color: #fef9d2; }
+
+.suite {
+    padding: 2px;
+    width: 30px;
+    height: 30px;
+    font-size: 2.6em;
+    text-align: center;
+    vertical-align: 50%;
+    float: left;
+}
+
+.power {
+    vertical-align: 50%;
+    font-size: 4.0em;
+    text-align: center;
+    font-family: "Courier 10 Pitch";
+}
+
+.title {
+    float: left;
+    font-size: 1.2em;
+    text-align: center;
+    width: 180px;
+    height: 40px;
+    vertical-align: 50%;
+    border-bottom: 2px solid black;
+    font-family: "Courier 10 Pitch";
+}
+
+.effectName {
+    float: left;
+    font-size: 1.1em;
+    font-weight: bold;
+    text-align: center;
+    width: 180px;
+    height: 60px;
+    vertical-align: middle;
+    border-bottom: 2px solid white;
+    font-family: "Liberation Sans Narrow"
+}
+
+.kind {
+    clear: both;
+    font-size: 0.7em;
+    font-style: italic;
+    text-align: center;
+}
+
+.effect {
+    font-style: italic;
+    padding-left: 30px;
+    padding-right: 30px;
+    text-align: center;
+}
+
+/* Attacks */
+
+.legacyName {
+    font-size: 1.7em;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    padding-bottom: 5%;
+    padding-top: 5%;
+}
+
+.legacyDesc {
+    text-size: 0.9em;
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
+.reuseWeigth {
+    width: 90%;
+    text-align: right;
+    font-size: 2.5em;
+    padding-top: 8%;
+
+}
+
+.attackCard {
+    width: 240px;
+    border: 5px double red;
+    height: 330px;
+    margin: 2px;
+    float: left;
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+}
+
+.attackSuite {
+    padding: 2px;
+    font-size: 3.8em;
+    text-align: center;
+    float: left;
+    color: red;
+}
+
+.attackName {
+    font-size: 1.1em;
+    color: darkred;
+    text-align: right;
+    width: 75%;
+    padding-right: 5%;
+    padding-left: 20%;
+}
+
+/* the four main sections */
+
+.attackHead {
+    height: 15%;
+    border-top: 1px double darkred;
+}
+
+.attackPoints {
+    height: 15%;
+    text-align: center;
+    font-weight: bolder;
+    font-family: Monospaced;
+    font-size: 1.5em;
+}
+
+.attackLegacy {
+    height: 50%;
+    -moz-transform: rotate(180deg);
+    border: 1px solid darkred;
+}
+
+.attackReuse {
+    padding-left: 10%;
+    padding-right: 5%;
+    padding-bottom: 2%;
+    padding-top: 2%;
+    height: 20%;
+    -moz-transform: rotate(180deg);
+    border: 1px solid darkred;
+}
