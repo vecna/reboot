@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-<title>Tests</title>
+<title>Reboot - Cards</title>
 <head>
 <link href="cardstyle.css" rel="stylesheet" />
 <style>
@@ -24,10 +24,9 @@ var suiteConversion = {
 var drawSkillCard = function(skillObj) {
 
     var cardBackground = document.createElement('div');
-    cardBackground.setAttribute('class', skillObj.suite);
 
     var cardSuite = document.createElement('div');
-    cardSuite.setAttribute('class', "suite");
+    cardSuite.setAttribute('class', "suite " + skillObj.suite);
     cardSuite.innerHTML = suiteConversion[skillObj.suite];
 
     var cardTitle = document.createElement('div');
@@ -44,8 +43,8 @@ var drawSkillCard = function(skillObj) {
 
     cardBackground.appendChild(cardSuite);
     cardBackground.appendChild(cardTitle);
-    cardBackground.appendChild(cardPower);
     cardBackground.appendChild(cardKind);
+    cardBackground.appendChild(cardPower);
 
     return cardBackground.outerHTML;
 };
@@ -66,16 +65,6 @@ var drawEventCard = function(eventObj) {
     cardEffect.setAttribute('class', "effect");
     cardEffect.innerHTML = eventObj.effects;
 
-    /* These are the monouse cards, marked with ፠ */
-    console.log(eventObj.weigth);
-    if (eventObj.weigth == 3) {
-        console.log("Yes");
-        var monoUse = document.createElement('div');
-        monoUse.setAttribute('class', "eventMonouse");
-        monoUse.innerHTML = "፠";
-        emptySpace.appendChild(monoUse);
-    }
-
     cardBackground.appendChild(emptySpace);
     cardBackground.appendChild(cardTitle);
     cardBackground.appendChild(cardEffect);
@@ -83,11 +72,11 @@ var drawEventCard = function(eventObj) {
     return cardBackground.outerHTML;
 };
 
-var drawCard = function(cardObj) {
+var drawCard = function(cardObj, endPageCheck) {
 
     /* .top is always a skill at the moment */
     var topCard = document.createElement('div');
-    topCard.setAttribute('class', "top " + cardObj.top.seed);
+    topCard.setAttribute('class', "top");
     topCard.innerHTML = drawSkillCard(cardObj.top);
 
     var downCard = document.createElement('div');
@@ -96,7 +85,7 @@ var drawCard = function(cardObj) {
         downCard.setAttribute('class', "down exception");
         downCard.innerHTML = drawEventCard(cardObj.down);
     } else {
-        downCard.setAttribute('class', "down " + cardObj.down.seed);
+        downCard.setAttribute('class', "down");
         downCard.innerHTML = drawSkillCard(cardObj.down);
     }
 
@@ -108,7 +97,7 @@ var drawCard = function(cardObj) {
     return newCard.outerHTML;
 };
 
-var drawAttack = function(attackObj) {
+var drawAttack = function(attackObj, endPageCheck) {
 
     var newAttack = document.createElement('div');
     newAttack.setAttribute('class', "attackCard");
@@ -117,7 +106,7 @@ var drawAttack = function(attackObj) {
     newHead.setAttribute('class', "attackHead");
 
     var topSuite = document.createElement('div');
-    topSuite.setAttribute('class', "attackSuite");
+    topSuite.setAttribute('class', "attackSuite " + attackObj.Targeting);
     topSuite.innerHTML = suiteConversion[attackObj.Targeting];
 
     var newName = document.createElement('div');
@@ -147,7 +136,7 @@ var drawAttack = function(attackObj) {
     newReuse.setAttribute('class', "attackReuse");
 
     var reuseSuite = document.createElement('div');
-    reuseSuite.setAttribute('class', "attackSuite");
+    reuseSuite.setAttribute('class', "attackSuite " + attackObj.Targeting);
     reuseSuite.innerHTML = suiteConversion[attackObj.Targeting];
 
     var reuseWeigth = document.createElement('div');
@@ -174,6 +163,7 @@ var drawAttack = function(attackObj) {
 
 var loadCards = function() {
 
+    var carry = 0;
     d3.json("GENERATED_ATTACK.json", function(error, elements) {
 
         d3.select("#attacks")
@@ -181,10 +171,13 @@ var loadCards = function() {
                 .data(elements)
                 .enter()
                 .append("div")
-                .html(function(d) {
-                    return drawAttack(d);
+                .html(function(d, i) {
+                    carry = i;
+                    return drawAttack(d, i);
                 })
     });
+
+    carry %= 3;
 
     d3.json("GENERATED_DECK.json", function(error, elements) {
 
@@ -193,8 +186,8 @@ var loadCards = function() {
                 .data(elements)
                 .enter()
                 .append("div")
-                .html(function(d) {
-                    return drawCard(d);
+                .html(function(d, i) {
+                    return drawCard(d, i + carry);
                 })
     });
 }
