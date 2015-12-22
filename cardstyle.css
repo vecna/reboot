@@ -78,6 +78,11 @@
     text-align: center;
 }
 
+.eventMonouse {
+    font-size: 4em;
+    color: #ddacc4;
+}
+
 /* Attacks */
 
 .legacyName {

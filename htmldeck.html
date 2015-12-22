@@ -66,6 +66,16 @@ var drawEventCard = function(eventObj) {
     cardEffect.setAttribute('class', "effect");
     cardEffect.innerHTML = eventObj.effects;
 
+    /* These are the monouse cards, marked with ፠ */
+    console.log(eventObj.weigth);
+    if (eventObj.weigth == 3) {
+        console.log("Yes");
+        var monoUse = document.createElement('div');
+        monoUse.setAttribute('class', "eventMonouse");
+        monoUse.innerHTML = "፠";
+        emptySpace.appendChild(monoUse);
+    }
+
     cardBackground.appendChild(emptySpace);
     cardBackground.appendChild(cardTitle);
     cardBackground.appendChild(cardEffect);
@@ -99,7 +109,6 @@ var drawCard = function(cardObj) {
 };
 
 var drawAttack = function(attackObj) {
-    console.log(attackObj);
 
     var newAttack = document.createElement('div');
     newAttack.setAttribute('class', "attackCard");
@@ -191,13 +200,12 @@ var loadCards = function() {
 }
 
 </script>
-
 </head>
+
 <body onload="loadCards();">
 
 <div id="attacks">
 </div>
-
 <div id="deck">
 </div>
 
