@@ -160,3 +160,43 @@ body {
     -moz-transform: rotate(180deg);
     border-bottom: 1px solid darkred;
 }
+
+/* missions */
+
+.missionName {
+    height: 20%;
+    text-align: center;
+    padding-left: 10%;
+    padding-right: 10%;
+    text-transform: uppercase;
+}
+
+.missionEntry {
+    border-top: 1px double black;
+    text-transform: uppercase;
+    padding-top: 8px;
+    padding-left: 8px;
+    height: 15%;
+}
+
+/* profiles */
+
+.highprofile {
+    height: 50%;
+    border: 1px double black;
+    text-transform: uppercase;
+    font-size: 3em;
+    font-weight: bolder;
+    text-align: center;
+}
+
+.lowprofile {
+    height: 50%;
+    text-align: center;
+    border: 1px double darkgrey;
+    text-transform: lowercase;
+    font-size: 3em;
+    font-weight: bolder;
+    color: darkgrey;
+    -moz-transform: rotate(180deg);
+}

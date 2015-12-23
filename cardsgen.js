@@ -13,6 +13,13 @@ _.map(exceptions, function(e) { e.kind = "exception"; });
 var attacks = JSON.parse(fs.readFileSync('DOWNLOAD.json', 'utf8'))["Attacks (fluff)"];
 _.map(attacks, function(a) { a.kind = "attack"; });
 
+var mission = [],
+    missionWeWant = [2, 4, 7, 8, 12, 15, 17],
+    allMissions = JSON.parse(fs.readFileSync('DOWNLOAD.json', 'utf8'))["Missions"];
+_.map(missionWeWant, function(i) {
+    mission.push(_.get(allMissions, i))
+});
+
 
 var pickFirst = function() {
     var mIndex;
@@ -29,7 +36,6 @@ var pickFirst = function() {
     if (mIndex == undefined) {
         console.log("BAD - first skills missing ");
         debugger;
-        console.log(cardUsed);
     }
     var retVal = _.get(skills, mIndex);
     cardUsed.push(retVal.cid);
@@ -48,7 +54,6 @@ var pickException = function(eId) {
     if (mIndex == undefined) {
         console.log("BAD - exception missing " + eId);
         debugger;
-        console.log(eventUsed);
     }
     var retVal = _.get(exceptions, mIndex);
     eventUsed.push(retVal.eid);
@@ -68,7 +73,6 @@ var pickPrecise = function(aimId)
     if (mIndex == undefined) {
         console.log("BAD - skills missing " + aimId);
         debugger;
-        console.log(cardUsed);
     }
     var retVal = _.get(skills, mIndex);
     cardUsed.push(retVal.cid);
@@ -88,10 +92,8 @@ var pickRange = function(smaId, bigId) {
     if (mIndex == undefined) {
         console.log("BAD - missing range " + smaId + " <> " + bigId);
         debugger;
-        console.log(cardUsed);
     }
     var retVal = _.get(skills, mIndex);
-    console.log("\tRange min " + smaId + " big " + bigId + " = match with " + retVal.cid);
     cardUsed.push(retVal.cid);
     delete skills[mIndex];
     return retVal;
@@ -115,9 +117,11 @@ var pickBasedOn = function(skillCardId) {
         var srcCardUniq = (skillCardId % 100);
     }
 
+    /*
     console.log("Skill card id " + skillCardId +
         "= Tier " + srcCardTier + " Suite " + srcCardSuite + " Uniq " + srcCardUniq
         + " Skills:" + skills.length + " Exceptions:" + exceptions.length);
+     */
 
     /* The three(s) goes with the first One */
     if (srcCardTier == 3 && srcCardUniq == 2) {
@@ -164,10 +168,11 @@ for(var i = 1; i <= 52; i++) {
         debug.push([newCard.top.cid, newCard.down.cid ]);
     }
     Cards.push(newCard);
-    console.log("Done: " + _.last(debug));
+//    console.log("Done: " + _.last(debug));
 }
 
 fs.writeFileSync('GENERATED_DECK.json', JSON.stringify(Cards, undefined, 2));
 fs.writeFileSync('GENERATED_ATTACK.json', JSON.stringify(attacks, undefined, 2));
+fs.writeFileSync('GENERATED_MISSIONS.json', JSON.stringify(mission, undefined, 2));
 
 console.log("Ok, done");

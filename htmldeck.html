@@ -18,7 +18,8 @@ var suiteConversion = {
     'anonymity': '♠',
     'hacking': '♥',
     'outreach': '♣',
-    'opsec': '♦'
+    'opsec': '♦',
+    'popularity': '٭'
 };
 
 var drawSkillCard = function(skillObj) {
@@ -161,10 +162,40 @@ var drawAttack = function(attackObj) {
     return newAttack.outerHTML;
 };
 
+var drawMission = function(missionObj) {
+    var categories = [
+        'Hacking',
+        'Anonymity',
+        'Outreach',
+        'Opsec',
+        'popularity'
+    ];
+
+    var newMission = document.createElement('div');
+    newMission.setAttribute('class', "card");
+
+    var missionName = document.createElement('div');
+    missionName.setAttribute('class', "missionName");
+    missionName.innerHTML = missionObj.Goals;
+
+    newMission.appendChild(missionName);
+
+    for (var i in categories) {
+        if(missionObj[categories[i]] >= 0) {
+            var entry = document.createElement('div');
+            entry.setAttribute('class', "missionEntry");
+            entry.innerHTML = suiteConversion[categories[i].toLowerCase()] +
+                    " " + categories[i] +
+                    " " + missionObj[categories[i]];
+            newMission.appendChild(entry);
+        }
+    }
+    return newMission.outerHTML;
+};
+
 var loadCards = function() {
 
     d3.json("GENERATED_ATTACK.json", function(error, elements) {
-
         d3.select("#attacks")
                 .selectAll("p")
                 .data(elements)
@@ -174,9 +205,7 @@ var loadCards = function() {
                     return drawAttack(d);
                 })
     });
-
     d3.json("GENERATED_DECK.json", function(error, elements) {
-
         d3.select("#deck")
                 .selectAll("p")
                 .data(elements)
@@ -186,6 +215,18 @@ var loadCards = function() {
                     return drawCard(d);
                 })
     });
+    d3.json("GENERATED_MISSIONS.json", function(error, elements) {
+        d3.select("#mission")
+                .selectAll("p")
+                .data(elements)
+                .enter()
+                .append("div")
+                .html(function(d) {
+                    return drawMission(d);
+                })
+    });
+
+
 }
 
 </script>
@@ -193,9 +234,32 @@ var loadCards = function() {
 
 <body onload="loadCards();">
 
-<div id="attacks">
-</div>
-<div id="deck">
+<div id="attacks"></div>
+<div id="deck"></div>
+<div id="mission"></div>
+
+<div id="profile">
+
+    <div class="card">
+        <div class="highprofile">High Profile</div>
+        <div class="lowprofile">Low Profile</div>
+    </div>
+
+    <div class="card">
+        <div class="highprofile">High Profile</div>
+        <div class="lowprofile">Low Profile</div>
+    </div>
+
+    <div class="card">
+        <div class="highprofile">High Profile</div>
+        <div class="lowprofile">Low Profile</div>
+    </div>
+
+    <div class="card">
+        <div class="highprofile">High Profile</div>
+        <div class="lowprofile">Low Profile</div>
+    </div>
+
 </div>
 
 </body>
